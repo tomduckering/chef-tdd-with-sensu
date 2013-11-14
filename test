@@ -1,0 +1,11 @@
+role="webserver"
+ssh_config="${role}_sshconfig"
+vagrant up ${role}
+vagrant ssh-config ${role} > ${ssh_config}
+
+tar czf sensu-checks.tar.gz ./sensu-checks
+
+scp -F ${ssh_config} sensu-checks.tar.gz ${role}:/tmp
+
+ssh -F ${ssh_config} ${role} "cd /tmp && rm -Rf ./sensu-checks && tar -xzf sensu-checks.tar.gz"
+ssh -F ${ssh_config} ${role} "cd /tmp/sensu-checks && ruby runchecks.rb ${role}"

@@ -1,0 +1,16 @@
+{
+  "checks": {
+    "apache_check": {
+      "handlers": ["default"],
+      "command": "/etc/sensu/plugins/processes/check-procs.rb -p httpd -C 1 -W 2 -c 50 -w 20",
+      "interval": 60,
+      "subscribers": [ "webserver" ]
+    },
+    "http_check": {
+    	"handlers":["default"],
+    	"command":"/etc/sensu/plugins/http/check-http.rb -u http://localhost/",
+    	"interval": 60,
+    	"subscribers": ["webserver"]
+    }
+  }
+}
